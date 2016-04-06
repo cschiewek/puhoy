@@ -1,5 +1,6 @@
 defmodule PuhoyTest do
   use ExUnit.Case
+  alias Puhoy.Group
   doctest Puhoy
 
   setup do
@@ -60,6 +61,6 @@ defmodule PuhoyTest do
     authenticate(context)
     {status, data} = Puhoy.group(context[:conn], "news.software.nntp")
     assert status == :ok
-    assert data =~ "211"
+    assert data.__struct__ == %Group{}.__struct__
   end
 end

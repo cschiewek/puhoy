@@ -1,5 +1,5 @@
 defmodule Puhoy do
-  alias Puhoy.Connection
+  alias Puhoy.{Connection, Group}
   @doc """
     https://tools.ietf.org/html/rfc3977
   """
@@ -26,5 +26,8 @@ defmodule Puhoy do
   def capabilities(conn), do: command(conn, "CAPABILITIES")
   def mode_reader(conn), do: command(conn, "MODE READER")
   def quit(conn), do: command(conn, "QUIT")
-  def group(conn, group), do: command(conn, "GROUP #{group}")
+  def group(conn, group) do
+    {status, response} = command(conn, "GROUP #{group}")
+    {status, Group.from_response(response)}
+  end
 end
