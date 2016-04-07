@@ -20,14 +20,22 @@ defmodule Puhoy do
 
   def command(conn, command) do
     Connection.send(conn, command <> "\r\n")
-    Connection.recv(conn, 0, 1000)
+    Connection.recv(conn, 0, 2000)
   end
 
   def capabilities(conn), do: command(conn, "CAPABILITIES")
+
   def mode_reader(conn), do: command(conn, "MODE READER")
+
   def quit(conn), do: command(conn, "QUIT")
+
   def group(conn, group) do
     {status, response} = command(conn, "GROUP #{group}")
     {status, Group.from_response(response)}
+  end
+
+  def body(conn, message_id) do
+    {status, response} = command(conn, "BODY #{message_id}")
+    {status, response |> String.split("\r\n") |> Enum.drop(1) |> Enum.join("\r\n")}
   end
 end

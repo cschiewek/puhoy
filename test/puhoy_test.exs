@@ -63,4 +63,14 @@ defmodule PuhoyTest do
     assert status == :ok
     assert data.__struct__ == %Group{}.__struct__
   end
+
+  test "body", context do
+    authenticate(context)
+    {status, data} = Puhoy.body(context[:conn], "<bdrdj3$bpd$1@ctb-nnrp2.saix.net>")
+    assert status == :ok
+    assert data == "Good day,\r\nIm setting up INND on Redhat 7.3 for a corporate LAN,\r\n" <>
+                   "did a makehistory (as news) - OK\r\nwhen I do a makedbz (as news/root) I get -    \"" <>
+                   "Cant do dbzagain, No such\r\nfile or directory\"\r\n\r\nI've check perms (644 - news)\r\n\r\n" <>
+                   "Any idea,\r\n\r\nTIA\r\n\r\nDAN\r\n\r\n\r\n"
+  end
 end
